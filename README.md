@@ -122,7 +122,7 @@ Run all scripts including AWS integration. Deploy QuickSight dashboard from `qui
 Industry research and Snowflake customer outcomes:
 - **Thailand targets 725,000 EV production by 2030, investing ฿500B in EEC battery plants** — [BOI Thailand](https://www.boi.go.th/en/index/)
 - **AI-powered battery quality monitoring reduces scrap rates by 15-25% in cell manufacturing** — [McKinsey Battery 2030](https://www.mckinsey.com/industries/automotive-and-assembly/our-insights)
-- **Predictive quality in battery production prevents $2-5M per recall event** — [Deloitte EV Manufacturing](https://www2.deloitte.com/us/en/insights/industry/automotive/electric-vehicle-trends.html)
+- **Predictive quality in battery production prevents $2-5M per recall event** — [Deloitte EV Manufacturing](https://www2.deloitte.com/us/en/insights/industry/automotive.html)
 - **BYD Thailand factory in Rayong produces 150,000 EVs annually since 2024** — [Bangkok Post](https://www.bangkokpost.com/business/general)
 
 
