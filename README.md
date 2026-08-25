@@ -124,7 +124,7 @@ Industry research and Snowflake customer outcomes:
 - **AI-powered battery quality monitoring reduces scrap rates by 15-25% in cell manufacturing** — [McKinsey Battery 2030](https://www.mckinsey.com/industries/automotive-and-assembly/our-insights)
 - **Predictive quality in battery production prevents $2-5M per recall event** — [Deloitte EV Manufacturing](https://www2.deloitte.com/us/en/insights/industry/automotive.html)
 - **BYD Thailand factory in Rayong produces 150,000 EVs annually since 2024** — [Bangkok Post](https://www.bangkokpost.com/business/general)
-
+- **BMW Group** (Snowflake customer): saved 25% on large data workloads and launched 60 operational use cases in 18 months on Snowflake -- [snowflake.com/customers/bmw-group](https://www.snowflake.com/en/customers/all-customers/case-study/bmw-group/)
 
 ## Key Demo Numbers
 
