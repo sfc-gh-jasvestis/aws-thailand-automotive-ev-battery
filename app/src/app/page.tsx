@@ -134,10 +134,11 @@ export default function HomePage() {
           'Show cycle life prediction for LFP vs NMC',
           'What is thermal runaway risk for packs > 2 years?',
         ]}
-        onSubmit={async (question) => {
+        mode="both"
+        onSubmit={async (question, mode) => {
           return {
-            answer: `[Demo Mode] Response to: "${question}" Connect to Snowflake for live data.`,
-            sql: 'SELECT * FROM CURATED.SUMMARY LIMIT 10;',
+            answer: `[Demo Mode] Response to: "${question}" (${mode} mode). Connect to Snowflake for live data.`,
+            sql: mode === 'sql' ? 'SELECT * FROM CURATED.SUMMARY LIMIT 10;' : undefined,
           };
         }}
       />
