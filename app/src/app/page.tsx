@@ -32,15 +32,23 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
+
+  // Look up a KPI value returned by /api/data (sourced from CURATED.KPI_SUMMARY).
+  // Falls back to the original literal so the card still renders if the API,
+  // or KPI_SUMMARY, is unavailable.
+  const kpiVal = (title: string, fallback: string): string =>
+    (data?.kpiCards as { title: string; value: string }[] | undefined)
+      ?.find((k) => k.title === title)?.value ?? fallback;
+
   const title = narrative?.title || 'SEA AWS Demo';
 
   const executiveCockpit = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KPICard title="Battery Yield" value="97.8%" status="neutral" />
-        <KPICard title="Cell Defect Rate" value="0.12%" status="neutral" />
-        <KPICard title="Thermal Events (MTD)" value="0" status="neutral" />
-        <KPICard title="Packs Produced" value="8,420" status="neutral" />
+        <KPICard title="Battery Yield" value={kpiVal('Battery Yield', '97.8%')} status="neutral" />
+        <KPICard title="Cell Defect Rate" value={kpiVal('Cell Defect Rate', '0.12%')} status="neutral" />
+        <KPICard title="Thermal Events (MTD)" value={kpiVal('Thermal Events (MTD)', '0')} status="neutral" />
+        <KPICard title="Packs Produced" value={kpiVal('Packs Produced', '8,420')} status="neutral" />
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="lg:col-span-1">
@@ -87,9 +95,9 @@ export default function HomePage() {
   const domainTab1 = (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <KPICard title="Avg Impedance" value="12.4 mΩ" />
-        <KPICard title="Formation Efficiency" value="99.1%" />
-        <KPICard title="Cycle Life Pred." value="1,847" />
+        <KPICard title="Avg Impedance" value={kpiVal('Avg Impedance', '12.4 mΩ')} />
+        <KPICard title="Formation Efficiency" value={kpiVal('Formation Efficiency', '99.1%')} />
+        <KPICard title="Cycle Life Pred." value={kpiVal('Cycle Life Pred.', '1,847')} />
       </div>
       <Chart
         data={data?.detail || [{ x: 'Mon', y: 24 }, { x: 'Tue', y: 28 }, { x: 'Wed', y: 22 }, { x: 'Thu', y: 31 }, { x: 'Fri', y: 26 }, { x: 'Sat', y: 19 }, { x: 'Sun', y: 23 }]}
