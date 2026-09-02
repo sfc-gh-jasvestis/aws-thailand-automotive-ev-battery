@@ -1,109 +1,82 @@
-# Demo Script: EV Battery Production Analytics
-## ~4-Minute Recorded Walkthrough
-**Format**: Screen recording with voiceover
-**Target**: Customer meeting / booth loop / social share
-**Narrative**: "Snowflake detects battery cell anomalies across 6 gigafactories, classifies defect patterns with AI, forecasts production yield, and alerts engineers — all native SQL, replacing SageMaker and custom ML pipelines"
-**Demo Mode**: Open app with `?demo=true` for presenter notes
+# EV Battery Production Analytics
 
----
+**Thailand - Automotive Manufacturing**
+Use case: EV Battery Quality & Production
 
-## Two Personas
+> Real-time monitoring of EV battery cell production across 6 Thai gigafactories — Snowflake ML detects quality excursions, forecasts cell degradation, and alerts production engineers before defective packs reach assembly.
 
-| Persona | Role | Tool | What they care about |
-|---|---|---|---|
-| **Somchai Wongsurawat** | VP Battery Manufacturing | React App (SPCS) | Cell yield rates, defect cost, capacity utilization, pack failure rates |
-| **Kanokwan Lertpanichkul** | Battery Process Engineer | Amazon QuickSight | Electrode coating uniformity, electrolyte fill accuracy, formation cycling anomalies, thermal runaway risk |
+## Why Snowflake
 
----
+Snowflake detects battery cell anomalies across 6 gigafactories, classifies defect patterns with AI, forecasts production yield, and alerts engineers — all native SQL, replacing SageMaker and custom ML pipelines
 
-## What's Built
+- **ML.ANOMALY_DETECTION on battery cell yield** - Only demo using anomaly detection for EV battery formation cycling data
+- **Material-to-yield traceability via Dynamic Tables** - Real-time correlation between supplier material quality and cell performance
+- **IoT Core → Snowpipe Streaming for formation data** - Sub-second ingestion of battery formation cycling telemetry
+- **Thai EEC gigafactory context** - Thailand's ฿500B EV investment with real factory locations and Thai company names
+- **Thermal runaway early warning** - ML.ANOMALY_DETECTION on temperature profiles during formation cycling
+- **Cortex Search on battery quality standards** - Searchable index of Thai Industrial Standards Institute (TISI) battery regulations
 
-| Layer | Component | Detail |
+## What is deployed
+
+| | |
+|---|---|
+| Database | `THAILAND_AUTOMOTIVE_EV_BATTERY` |
+| Service | `THAILAND_AUTOMOTIVE_EV_BATTERY_APP` |
+| Compute pool | `SEA_DEMOS_THAILAND_POOL` |
+| Dimension table | `RAW.GIGAFACTORIES` (20 rows) |
+| Fact table | `RAW.CELL_TELEMETRY` (250,000 rows, 90 days) |
+| Curated layer | `CURATED.PERFORMANCE_SUMMARY`, `CURATED.TREND_ANALYSIS`, `CURATED.KPI_SUMMARY` |
+| Currency | THB (฿) |
+
+Regions in play: Bangkok, Chonburi, Rayong, Chiang Mai, Songkhla
+Segments: Cell, Module, Pack, Battery Management System
+
+Dynamic tables are created suspended and refreshed on demand:
+
+```bash
+./refresh_demo_data.sh THAILAND_AUTOMOTIVE_EV_BATTERY
+```
+
+## KPI cards
+
+Every card below is served live from `CURATED.KPI_SUMMARY`. The app keeps the
+original literal as a fallback, so it still renders if Snowflake is unreachable.
+
+| Card | Value | Backed by |
 |---|---|---|
-| **RAW** | 8 tables | GIGAFACTORIES (6), PRODUCTION_LINES (36), CELL_BATCHES (8000), CELL_TELEMETRY (600000), FORMATION_CYCLING (200000), QUALITY_REPORTS (120), SUPPLIER_MATERIALS (500), THAI_EV_MARKET (12) |
-| **CURATED** | 4 Dynamic Tables | LINE_YIELD_SUMMARY, YIELD_TIMESERIES, CELL_HEALTH_SCORES, MATERIAL_QUALITY_TRENDS |
-| **ML** | ML.FORECAST + ML.ANOMALY_DETECTION | Forecasting + anomaly detection |
-| **AI** | COMPLETE, AI_CLASSIFY, SUMMARIZE | Classification + extraction |
-| **Search** | Cortex Search | 120 documents indexed |
-| **Agent** | BATTERY_INTELLIGENCE_AGENT | Semantic View + Search tools |
+| Battery Yield | `97.8%` | average per event |
+| Cell Defect Rate | `0.12%` | average per event |
+| Thermal Events (MTD) | `0` | total across Gigafactories |
+| Packs Produced | `8,420` | total across Gigafactories |
+| Avg Impedance | `12.4 mΩ` | average per event |
+| Formation Efficiency | `99.1%` | average per event |
+| Cycle Life Pred. | `1,847` | total across Gigafactories |
 
 
----
+## Demo flow
 
-## The Story
+1. Executive Cockpit
+2. Cell Yield Analytics
+3. Material & Supplier Quality
+4. Ask AI
+5. Architecture & Data
 
-Thailand's Eastern Economic Corridor hosts 6 EV battery gigafactories producing cells for BYD, Great Wall Motor, and MG. A 3.8% yield degradation across 3 production lines is generating ฿850M in annual scrap — the root cause spans electrode coating variance, electrolyte fill accuracy, and cathode material purity that traditional QC catches too late.
+## Talking points
 
----
+- **฿850M** - annual scrap cost across 6 gigafactories (US$24M)
+- **3 of 36 lines** - below 90% yield target (CRITICAL status)
+- **12 thermal events** - flagged in the last 72 hours
+- **9 of 14 days** - anomalous for Line-03 (ML.ANOMALY_DETECTION)
+- **600K readings** - ingested daily via IoT Core → Snowpipe Streaming
+- **5-day forecast** - yield collapse predicted without intervention (ML.FORECAST)
 
-## Script
+## Business impact
 
-### [0:00–0:45] EXECUTIVE COCKPIT
-
-**Show**: Executive Cockpit tab
-
-> "Eight hundred fifty million baht in annual scrap cost across 6 gigafactories in the EEC."
-
-**Action**: Point at the ฿850M scrap cost KPI card
-
-### [0:45–1:30] CELL YIELD ANALYTICS
-
-**Show**: Cell Yield Analytics tab
-
-> "Line-03 in Rayong producing NCM811 cells — yield at 87.2%, below 90% target."
-
-**Action**: Click Line-03 in the line list
-
-### [1:30–2:15] MATERIAL & SUPPLIER QUALITY
-
-**Show**: Material & Supplier Quality tab
-
-> "Supplier material quality correlates with yield drops — cathode Batch-CH2847 showing purity variance."
-
-**Action**: Show material-to-yield correlation chart
-
-### [2:15–3:00] ASK AI
-
-**Show**: Ask AI tab
-
-> "Somchai asks: 'What is our total scrap cost this quarter by plant?'"
-
-**Action**: Type: 'Total scrap cost by plant this quarter'
-
-### [3:00–3:45] ARCHITECTURE & DATA
-
-**Show**: Architecture & Data tab
-
-> "Eight Snowflake capabilities, six AWS services."
-
-**Action**: Walk through architecture diagram
-
+- Thailand targets 725,000 EV production by 2030, investing ฿500B in EEC battery plants (BOI Thailand)
+- AI-powered battery quality monitoring reduces scrap rates by 15-25% in cell manufacturing (McKinsey Battery 2030)
+- Predictive quality in battery production prevents $2-5M per recall event (Deloitte EV Manufacturing)
+- BYD Thailand factory in Rayong produces 150,000 EVs annually since 2024 (Bangkok Post)
 
 ---
-
-## Key Demo Differentiators
-
-1. **ML.ANOMALY_DETECTION on battery cell yield** — Only demo using anomaly detection for EV battery formation cycling data
-2. **Material-to-yield traceability via Dynamic Tables** — Real-time correlation between supplier material quality and cell performance
-3. **IoT Core → Snowpipe Streaming for formation data** — Sub-second ingestion of battery formation cycling telemetry
-4. **Thai EEC gigafactory context** — Thailand's ฿500B EV investment with real factory locations and Thai company names
-5. **Thermal runaway early warning** — ML.ANOMALY_DETECTION on temperature profiles during formation cycling
-6. **Cortex Search on battery quality standards** — Searchable index of Thai Industrial Standards Institute (TISI) battery regulations
-
-
----
-
-## Demo Prep Checklist
-
-### Data Verification
-- [ ] `SELECT COUNT(*) FROM EV_BATTERY_PROD.RAW.CELL_BATCHES` → 8000
-- [ ] `SELECT COUNT(*) FROM EV_BATTERY_PROD.RAW.CELL_TELEMETRY` → 600000
-- [ ] `SELECT COUNT(DISTINCT LINE_ID) FROM EV_BATTERY_PROD.CURATED.LINE_YIELD_SUMMARY WHERE YIELD_STATUS = 'CRITICAL'` → 3
-
-### ML Model Verification
-- [ ] `SELECT COUNT(*) FROM EV_BATTERY_PROD.ML.BATTERY_YIELD_FORECAST_RESULTS` → >0
-- [ ] `SELECT SUM(CASE WHEN IS_ANOMALY THEN 1 ELSE 0 END) FROM EV_BATTERY_PROD.ML.CELL_QUALITY_ANOMALY_RESULTS WHERE SERIES = 'LINE-03'` → >=7
-
-### AI/Agent Verification
-- [ ] `SELECT COUNT(*) FROM EV_BATTERY_PROD.AI.QUALITY_REPORT_SUMMARIES` → 120
-
+Generated from `generator/demo_specs/aws-thailand-automotive-ev-battery.json`. Do not hand-edit: run
+`python3 generator/gen_repo_docs.py aws-thailand-automotive-ev-battery` instead.
