@@ -54,6 +54,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="thailand"
+            labels={{ entity: 'Chemistries', event: 'Cell Telemetry', alert: 'Defects' }}
             regions={data?.regions}
             markers={[{"label": "Rayong", "value": "Assembly: OEE 87%", "color": "green", "size": "lg"}, {"label": "Bangkok", "value": "HQ & R&D", "color": "blue", "size": "md"}, {"label": "Laem Chabang", "value": "Export port", "color": "blue", "size": "md"}]}
             routes={[{"from": "Rayong", "to": "Laem Chabang", "color": "#29B5E8"}]}
@@ -84,8 +85,13 @@ export default function HomePage() {
         columns={[
           { key: 'id', header: 'Pack ID' },
           { key: 'name', header: 'Chemistry' },
+          { key: 'region', header: 'Region' },
           { key: 'status', header: 'QC Status' },
-          { key: 'value', header: 'Capacity kWh' },
+          { key: 'm1', header: 'Capacity kWh' },
+          { key: 'm2', header: 'Impedance' },
+          { key: 'm3', header: 'Cell Defect Rate' },
+          { key: 'events', header: 'Cell Telemetry' },
+          { key: 'alerts', header: 'Defects' },
         ]}
         data={data?.entities || []}
         title="Battery Pack Tracking"
