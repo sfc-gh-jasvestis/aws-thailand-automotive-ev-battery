@@ -54,6 +54,7 @@ export default function HomePage() {
         <div className="lg:col-span-1">
           <GeoMap
             country="thailand"
+            regions={data?.regions}
             markers={[{"label": "Rayong", "value": "Assembly: OEE 87%", "color": "green", "size": "lg"}, {"label": "Bangkok", "value": "HQ & R&D", "color": "blue", "size": "md"}, {"label": "Laem Chabang", "value": "Export port", "color": "blue", "size": "md"}]}
             routes={[{"from": "Rayong", "to": "Laem Chabang", "color": "#29B5E8"}]}
             title="Geographic Overview"
